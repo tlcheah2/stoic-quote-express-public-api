@@ -1,0 +1,17 @@
+- pipeline: "Build Docker Image to ECR"
+  on: "EVENT"
+  events:
+    - type: "PUSH"
+      refs:
+        - "refs/heads/master"
+  priority: "NORMAL"
+  fail_on_prepare_env_warning: true
+
+  actions:
+    - action: "Build Docker image"
+      type: "DOCKERFILE"
+      region: "ap-southeast-1"
+      docker_image_tag: "1.0.0"
+      dockerfile_path: "Dockerfile"
+      repository: "stoic-quote-express"
+      integration_hash: "Pr1gO3GWpmbkB695azJn4KRjLM"
