@@ -16,7 +16,7 @@ GET https://api.themotivate365.com/stoic-quote
 The request takes no parameters, headers or query strings.
 
 ## Example
-`curl -X GET https://api.themotivate365.com/stoic-quote`
+`curl -X GET https://stoic.tekloon.net/stoic-quote`
 
 Generates:
 ```
