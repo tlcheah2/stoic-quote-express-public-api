@@ -23,3 +23,26 @@ exports.getRandomSingleQuote = async (condition = {}) => {
     return undefined;
   }
 };
+
+exports.upsertQuote = async (quoteData) => {
+  try {
+    const quotes = await getQuoteCollection();
+    const {
+      author, quote, category,
+    } = quoteData;
+
+    if (!author || !quote) {
+      throw new Error('author and quote are required');
+    }
+
+    const filter = { quote };
+    const update = { $set: { author, quote, category } };
+    const options = { upsert: true, returnOriginal: false };
+
+    const result = await quotes.findOneAndUpdate(filter, update, options);
+    return result.value;
+  } catch (err) {
+    console.log('upsertQuote error', err);
+    throw err;
+  }
+};

@@ -19,4 +19,16 @@ app.get('/stoic-quote', async (req, res) => {
   }
 });
 
+app.post('/quote', async (req, res) => {
+  try {
+    const quote = await quoteService.upsertQuote(req.body);
+    return res.json({ data: quote });
+  } catch (err) {
+    if (err.message === 'author and quote are required') {
+      return res.status(400).json({ error: err.message });
+    }
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 module.exports = app;
