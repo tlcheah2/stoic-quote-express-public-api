@@ -15,6 +15,17 @@ GET https://stoic.tekloon.net/stoic-quote
 
 The request takes no parameters, headers or query strings.
 
+## SSE Stream Endpoint
+GET https://stoic.tekloon.net/stoic-quote/stream
+
+Use this endpoint with `EventSource` on the frontend to receive a quote immediately, then every minute.
+
+Set `CORS_ORIGIN` in your environment so browser clients from a different domain can connect:
+
+```
+CORS_ORIGIN=http://localhost:5173
+```
+
 ## Example
 `curl -X GET https://stoic.tekloon.net/stoic-quote`
 

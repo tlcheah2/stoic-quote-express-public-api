@@ -2,8 +2,9 @@ import express from "express";
 
 import * as quoteService from "./services/quoteService.js";
 import { connectDB } from "./mongodb.js";
-import { RateLimiter } from "limiter";
 import { createTokenBucketLimiterMiddleware } from "./lib/tokenBucketLimiter.js";
+import { stoicQuoteStreamHandler } from "./routes/stoicQuoteStream.js";
+import { extractQuoteJobHandler } from "./routes/extractQuoteJob.js";
 
 const app = express();
 // Init connection to MongoDB
@@ -26,6 +27,18 @@ app.get(
       return res.status(500).json({ error: "Internal Server Error" });
     }
   },
+);
+
+app.get(
+  "/stoic-quote/stream",
+  createTokenBucketLimiterMiddleware(10, "minute"),
+  stoicQuoteStreamHandler,
+);
+
+app.post(
+  "/extract-quote-job",
+  createTokenBucketLimiterMiddleware(10, "minute"),
+  extractQuoteJobHandler,
 );
 
 app.post("/quote", async (req, res) => {
