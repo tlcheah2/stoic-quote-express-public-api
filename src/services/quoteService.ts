@@ -1,4 +1,5 @@
 import { getQuoteCollection } from "../mongodb.js";
+import type { StoicQuote } from "../types/stoic-quote.js";
 
 export const getRandomSingleQuote = async (condition = {}) => {
   try {
@@ -19,7 +20,7 @@ export const getRandomSingleQuote = async (condition = {}) => {
           $sample: { size: 1 },
         },
       ])
-      .toArray();
+      .toArray() as Promise<StoicQuote[]>;
   } catch (err) {
     console.log("getRandomSingleQuote error", err);
     return undefined;

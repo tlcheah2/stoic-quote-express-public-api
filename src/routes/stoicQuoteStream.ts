@@ -1,16 +1,20 @@
 import type { Request, Response } from "express";
 
 import * as quoteService from "../services/quoteService.js";
+import type { StoicQuote } from "../types/stoic-quote.js";
 
 const SSE_QUOTE_INTERVAL_MS = 60_000;
 const SSE_HEARTBEAT_INTERVAL_MS = 30_000;
-type StoicQuote = { author: string; quote: string };
 
 const writeEvent = (res: Response, payload: unknown) => {
   res.write(`data: ${JSON.stringify(payload)}\n\n`);
 };
 
-const writeNamedEvent = (res: Response, eventName: string, payload: unknown) => {
+const writeNamedEvent = (
+  res: Response,
+  eventName: string,
+  payload: unknown,
+) => {
   res.write(`event: ${eventName}\n`);
   res.write(`data: ${JSON.stringify(payload)}\n\n`);
 };
@@ -32,7 +36,9 @@ type StreamHandlerOptions = {
   getQuote?: () => Promise<StoicQuote | undefined>;
 };
 
-export const createStoicQuoteStreamHandler = (options?: StreamHandlerOptions) => {
+export const createStoicQuoteStreamHandler = (
+  options?: StreamHandlerOptions,
+) => {
   const quoteIntervalMs = options?.quoteIntervalMs ?? SSE_QUOTE_INTERVAL_MS;
   const heartbeatIntervalMs =
     options?.heartbeatIntervalMs ?? SSE_HEARTBEAT_INTERVAL_MS;
